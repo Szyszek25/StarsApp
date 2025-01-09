@@ -1,0 +1,4 @@
+Słońce;0;G2V
+Proxima Centauri;4.24;M5.5
+Sirius;8.6;A1V
+Betelgeza;548;M1-2
