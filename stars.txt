@@ -1,4 +1,53 @@
-Słońce;0;G2V
+Słońce;0.0;G2V
 Proxima Centauri;4.24;M5.5
+Rigil Kentaurus;4.37;G2V
+Jowisz;5.0;2
+Barnard's Star;5.98;M4
+Wolf 359;7.78;M6
 Sirius;8.6;A1V
-Betelgeza;548;M1-2
+Luyten 726-8 A;8.73;M5.5
+Ross 154;9.69;M3.5
+Epsilon Eridani;10.52;K2V
+Lacaille 9352;10.68;M1.5
+Ross 128;11.02;M4
+61 Cygni;11.4;K5V
+Tau Ceti;11.9;G8.5V
+Teegarden's Star;12.58;M7
+GJ 412 A;15.99;M1
+Altair;16.73;A7V
+Vega;25.04;A0V
+Fomalhaut;25.13;A3V
+Pollux;33.7;K0III
+Denebola;36.53;A3V
+Arcturus;36.7;K1.5III
+TRAPPIST-1;40.0;M8
+Capella;42.2;G0III
+GJ 1214;47.55;M4.5
+Rasalhague;48.6;A5III
+Mu Arae;50.5;G3IV-V
+Aldebaran;65.1;K5III
+56;67.0;5
+Regulus;79.0;B7V
+Merak;79.7;A1V
+Megrez;80.5;A3V
+Menkalinan;81.0;A2IV
+Alioth;81.0;A0p
+Phecda;84.0;A0Ve
+Gienah;85.0;B8III
+Algol;93.0;B8V
+Kepler-444;116.0;K0
+Dubhe;123.0;K0III
+Kochab;130.0;K4III
+Markab;133.0;B9.5III
+Scheat;196.0;M2II-III
+Izar;203.0;A2IV
+Spica;250.0;B1V
+Mira;300.0;M7IIIe
+Polaris;433.0;F7Ib
+Alcyone;445.0;B7IIIe
+Betelgeza;548.0;M1-2
+Antares;550.0;M1.5Iab
+Mintaka;1200.0;O9.5II
+Alnitak;1260.0;O9.5Ib
+Alnilam;2000.0;B0Ia
+Deneb;2614.0;A2Ia

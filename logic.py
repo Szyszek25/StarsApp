@@ -87,3 +87,13 @@ def load_stars_from_file(filepath: str) -> List["Star"]:
         raise FileNotFoundError(f"Plik '{filepath}' nie został znaleziony.")
 
     return loaded_stars
+
+
+def save_stars_to_file(filepath: str, stars_list: List[Star]) -> None:
+    """
+    Zapisuje listę gwiazd do pliku .txt w formacie: nazwa;odleglosc;typ
+    """
+    with open(filepath, "w", encoding="utf-8") as f:
+        for star in stars_list:
+            line = f"{star.name};{star.distance};{star.spectral_type}\n"
+            f.write(line)
