@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 #JohnSalam
+=======
+#mój commit HHHHHH
+#commit 
+>>>>>>> 3ba873aedabe5fd93e4b6675e8496cb7bb738625
 import tkinter as tk
 import tkinter.font as tkFont
 from tkinter import ttk, filedialog, messagebox
