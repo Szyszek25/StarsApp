@@ -12,13 +12,14 @@ gwiazdy = []
 
 def interfejs():
     while True:
+        merge_sort(gwiazdy)
         print("\nGwiazdozbior ;-)")
         print("[0] Dodaj Gwiazde")
         print("[1] Wyswietl Gwiazdy")
-        print("[2] Usun Gwiazde ")
-        print("[3] Wyszukaj Gwiazde ")
-        print("[4] Dodaj Gwiazdy z pliku ")
-        print("[5] Zakoncz program ")
+        print("[2] Usun Gwiazde")
+        print("[3] Wyszukaj Gwiazdy")
+        print("[4] Dodaj Gwiazdy z pliku")
+        print("[5] Zakoncz program")
         wybor = input("Wybierz opcje: ")
         if (wybor == "0"):
            dodaj_gwiazde() 
@@ -27,7 +28,7 @@ def interfejs():
         elif (wybor == "2"):
            usun_gwiazde() 
         elif (wybor == "3"):
-           wyszukaj_gwiazde()    
+           wyszukaj_gwiazdy()    
         elif (wybor == "4"):
             dodaj_z_pliku() 
         elif (wybor == "5"):
@@ -35,6 +36,7 @@ def interfejs():
             exit()
         else:
             print("Podaj odpowiedni znak")
+    
 
 def dodaj_gwiazde():
     input1 = input("Podaj nazwe gwiazdy: ")
@@ -49,12 +51,10 @@ def wyswietl_gwiazdy():
         print("Brak gwiazd")
         return
     
-    merge_sort(gwiazdy)
     i = 1
     print(f"Wszystkie gwiazdy: ")
-    for gwiazda in gwiazdy:
+    for i, gwiazda in enumerate(gwiazdy, start=1):
         print(i, gwiazda)
-        i+=1
 
 def usun_gwiazde():
     if not gwiazdy:
@@ -70,8 +70,23 @@ def usun_gwiazde():
         else:
                 print("Podaj odpowiedni znak")
 
-def wyszukaj_gwiazde():
-    return 0
+def wyszukaj_gwiazdy():
+    szukaj_po = input("Wprowadź czesc nazwy gwiazdy: ").strip().lower()
+    if not szukaj_po:
+        print("Podaj niepusty fragment")
+        return
+    
+    pasujace = []
+    for i, gwiazda in enumerate(gwiazdy, start=1):
+        if szukaj_po in gwiazda.nazwa.lower():
+            pasujace.append((i,gwiazda))
+
+    if pasujace:
+        for i, gwiazda in pasujace:
+            print(i,gwiazda)
+    else:
+        print("Nie znaleziono pasujacych gwiazd")
+
 
 def dodaj_z_pliku():
     file = open(r"C:\Users\pmaci\Desktop\pliktest.txt", "r")
