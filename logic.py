@@ -1,99 +1,116 @@
-# logic.py
-#v2
-from typing import List, Optional
+#tu bedzie logika apki
 
-class Star:
-    def __init__(self, name: str, distance: float, spectral_type: str):
-        self.name = name
-        self.distance = distance
-        self.spectral_type = spectral_type
+class Gwiazda:
+    def __init__(self, nazwa: str, odleglosc: float):
+        self.nazwa = nazwa
+        self.odleglosc = odleglosc
 
     def __str__(self):
-        return f"{self.name} | {self.distance:.2f} ly | {self.spectral_type}"
+        return f"{self.nazwa} | {self.odleglosc}"
+    
+gwiazdy = []
 
-def merge_sort(stars_list: List["Star"]) -> List["Star"]:
-    """Własna implementacja merge sort – sortujemy gwiazdy po odległości."""
-    if len(stars_list) <= 1:
-        return stars_list
-    mid = len(stars_list) // 2
-    left_half = merge_sort(stars_list[:mid])
-    right_half = merge_sort(stars_list[mid:])
-    return merge(left_half, right_half)
-
-def merge(left: List["Star"], right: List["Star"]) -> List["Star"]:
-    merged = []
-    i, j = 0, 0
-    while i < len(left) and j < len(right):
-        if left[i].distance <= right[j].distance:
-            merged.append(left[i])
-            i += 1
+def interfejs():
+    while True:
+        print("\nGwiazdozbior ;-)")
+        print("[0] Dodaj Gwiazde")
+        print("[1] Wyswietl Gwiazdy")
+        print("[2] Usun Gwiazde ")
+        print("[3] Wyszukaj Gwiazde ")
+        print("[4] Dodaj Gwiazdy z pliku ")
+        print("[5] Zakoncz program ")
+        wybor = input("Wybierz opcje: ")
+        if (wybor == "0"):
+           dodaj_gwiazde() 
+        elif (wybor == "1"):
+           wyswietl_gwiazdy()  
+        elif (wybor == "2"):
+           usun_gwiazde() 
+        elif (wybor == "3"):
+           wyszukaj_gwiazde()    
+        elif (wybor == "4"):
+            dodaj_z_pliku() 
+        elif (wybor == "5"):
+            print("Koniec programu")
+            exit()
         else:
-            merged.append(right[j])
-            j += 1
-    merged.extend(left[i:])
-    merged.extend(right[j:])
-    return merged
+            print("Podaj odpowiedni znak")
 
-def binary_search_by_name(stars_list: List["Star"], target_name: str) -> Optional[int]:
-    """Wyszukiwanie binarne gwiazdy po nazwie (po wcześniejszym posortowaniu po nazwie)."""
-    # Kopia listy posortowanej alfabetycznie po name (rosnąco):
-    sorted_by_name = sorted(stars_list, key=lambda s: s.name.lower())
-    left, right = 0, len(sorted_by_name) - 1
-    target_lower = target_name.lower()
+def dodaj_gwiazde():
+    input1 = input("Podaj nazwe gwiazdy: ")
+    input2 = float(input("Podaj odleglosc gwiazdy od Ziemi: "))
 
-    while left <= right:
-        mid = (left + right) // 2
-        mid_name = sorted_by_name[mid].name.lower()
-        if mid_name == target_lower:
-            return mid
-        elif mid_name < target_lower:
-            left = mid + 1
+    nowa_gwiazda = Gwiazda(input1, input2)
+    gwiazdy.append(nowa_gwiazda)
+    print(f"Dodano: {nowa_gwiazda}")
+    
+def wyswietl_gwiazdy():
+    if not gwiazdy:
+        print("Brak gwiazd")
+        return
+    
+    merge_sort(gwiazdy)
+    i = 1
+    print(f"Wszystkie gwiazdy: ")
+    for gwiazda in gwiazdy:
+        print(i, gwiazda)
+        i+=1
+
+def usun_gwiazde():
+    if not gwiazdy:
+        print("Brak gwiazd")
+        return
+    wyswietl_gwiazdy()
+    while True:
+        wybor = int(input("Podaj numer gwiazdy do usuniecia: "))
+        if (wybor >= 1 and wybor <= len(gwiazdy)):
+            usunieta = gwiazdy.pop(wybor - 1)
+            print("Usunieto:", usunieta)
+            return
         else:
-            right = mid - 1
-    return None
+                print("Podaj odpowiedni znak")
 
-def load_stars_from_file(filepath: str) -> List["Star"]:
-    """
-    Wczytuje dane z pliku tekstowego o formacie:
-    nazwa_gwiazdy;odleglosc;typ_widmowy
-    Zwraca listę obiektów Star.
-    """
-    loaded_stars = []
-    try:
-        with open(filepath, "r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if not line:
-                    continue
-                parts = line.split(";")
-                if len(parts) != 3:
-                    # Pomijamy linie o niepoprawnym formacie
-                    continue
+def wyszukaj_gwiazde():
+    return 0
 
-                name, dist_str, spectral = parts
-                name = name.strip()
-                spectral = spectral.strip()
+def dodaj_z_pliku():
+    file = open(r"C:\Users\jakub\Desktop\StarsApp\pliktest.txt", "r")
+    for line in file:
+        if line:
+            line.strip()
+            nazwa, odleglosc = line.split(",")
+            nowa_gwiazda = Gwiazda(nazwa.strip(), float(odleglosc.strip()))
+            gwiazdy.append(nowa_gwiazda)
+    file.close()
+    print("Dodano gwiazdy")
 
-                try:
-                    distance = float(dist_str)
-                except ValueError:
-                    # Pomijamy wiersze z błędną liczbą
-                    continue
+def merge_sort(arr):
+    if len(arr) > 1:
+        srodek = len(arr)//2
+        lewa = arr[0:srodek]
+        prawa = arr[srodek:len(arr)]
 
-                star = Star(name, distance, spectral)
-                loaded_stars.append(star)
+        merge_sort(lewa)
+        merge_sort(prawa)
 
-    except FileNotFoundError:
-        raise FileNotFoundError(f"Plik '{filepath}' nie został znaleziony.")
+        i = j = k = 0
 
-    return loaded_stars
-
-
-def save_stars_to_file(filepath: str, stars_list: List[Star]) -> None:
-    """
-    Zapisuje listę gwiazd do pliku .txt w formacie: nazwa;odleglosc;typ
-    """
-    with open(filepath, "w", encoding="utf-8") as f:
-        for star in stars_list:
-            line = f"{star.name};{star.distance};{star.spectral_type}\n"
-            f.write(line)
+        while i < len(lewa) and j < len(prawa):
+            if lewa[i].odleglosc <= prawa[j].odleglosc:
+                arr[k] = lewa[i]
+                i+=1
+            else:
+                arr[k] = prawa[j]
+                j+=1
+            k+=1
+        while i < len(lewa):
+            arr[k] = lewa[i]
+            i+=1
+            k+=1
+        while j < len(prawa):
+            arr[k] = prawa[j]
+            j+=1
+            k+=1
+        
+if __name__ == "__main__":
+    interfejs()

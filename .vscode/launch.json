@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: app_gui",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/app_gui.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: logic (konsola)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/logic.py",
+            "console": "integratedTerminal"
+        }
+    ]
+}
