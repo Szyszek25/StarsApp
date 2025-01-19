@@ -1,4 +1,4 @@
-#tu bedzie logika apki
+# logic.py
 
 class Gwiazda:
     def __init__(self, nazwa: str, odleglosc: float):
@@ -36,67 +36,87 @@ def interfejs():
         else:
             print("Podaj odpowiedni znak")
 
-def dodaj_gwiazde(nazwa: str, odleglosc:float):
-    #input1 = input("Podaj nazwe gwiazdy: ")
-    #input2 = float(input("Podaj odleglosc gwiazdy od Ziemi: "))
 
-    nowa_gwiazda = Gwiazda(nazwa,odleglosc)
+def dodaj_gwiazde(nazwa: str = None, odleglosc: float = None):
+    """
+    Została zachowana możliwość użycia w trybie konsolowym (interfejs),
+    ale także można wywoływać z GUI, podając argumenty.
+    """
+    if nazwa is None or odleglosc is None:
+        input1 = input("Podaj nazwe gwiazdy: ")
+        input2 = float(input("Podaj odleglosc gwiazdy od Ziemi: "))
+        nowa_gwiazda = Gwiazda(input1, input2)
+    else:
+        nowa_gwiazda = Gwiazda(nazwa, odleglosc)
+    
     gwiazdy.append(nowa_gwiazda)
     print(f"Dodano: {nowa_gwiazda}")
-    
+
+
 def wyswietl_gwiazdy():
     if not gwiazdy:
         print("Brak gwiazd")
-        return
+        return []
     
+    # Sortowanie po odległości - tak, jak było w merge_sort
     merge_sort(gwiazdy)
     return gwiazdy
-    
-    #i = 1
-    #print(f"Wszystkie gwiazdy: ")
-    #for gwiazda in gwiazdy:
-        #print(i, gwiazda)
-       # i+=1
 
-def usun_gwiazde(index: int):
+
+def usun_gwiazde(index: int = None):
     """
-    if not gwiazdy:
-        print("Brak gwiazd")
-        return
-    wyswietl_gwiazdy()
-    while True:
-        wybor = int(input("Podaj numer gwiazdy do usuniecia: "))
-        if (wybor >= 1 and wybor <= len(gwiazdy)):
-            usunieta = gwiazdy.pop(wybor - 1)
-            print("Usunieto:", usunieta)
+    Została zachowana możliwość pracy w konsoli,
+    ale także można wywoływać z GUI z odpowiednim indeksem.
+    """
+    if index is None:
+        if not gwiazdy:
+            print("Brak gwiazd")
             return
-        else:
+        wyswietl_gwiazdy()
+        while True:
+            wybor = int(input("Podaj numer gwiazdy do usuniecia: "))
+            if (1 <= wybor <= len(gwiazdy)):
+                usunieta = gwiazdy.pop(wybor - 1)
+                print("Usunieto:", usunieta)
+                return
+            else:
                 print("Podaj odpowiedni znak")
+    else:
+        if 0 <= index < len(gwiazdy):
+            usunieta = gwiazdy.pop(index)
+            print(f"Usunięto: {usunieta}")
+        else:
+            print("Nieprawidłowy indeks")
+
+
+def wyszukaj_gwiazde(query: str = None):
     """
-    #if 0 <= index < len(gwiazdy):
-    usunieta = gwiazdy.pop(index)
-    print(f"Usunięto: {usunieta}")  # do gui
-    #else:
-        #print("Nieprawidłowy indeks")  # do gui
-
-
-def wyszukaj_gwiazde(query: str):
+    Wyszukiwanie liniowe (po fragmencie nazwy), zostaje niezmienione.
+    """
+    if query is None:
+        query = input("Podaj fragment nazwy gwiazdy: ")
     wyniki = [gwiazda for gwiazda in gwiazdy if query.lower() in gwiazda.nazwa.lower()]
     return wyniki
 
-def dodaj_z_pliku(filepath: str):
+
+def dodaj_z_pliku(filepath: str = None):
+    """
+    Przy kolejnym wczytaniu pliku czyścimy listę gwiazd, aby nie było duplikacji.
+    """
+    if filepath is None:
+        filepath = input("Podaj ścieżkę do pliku: ")
+    gwiazdy.clear()  # <-- Kluczowy fragment, aby nie duplikować wpisów
     dodane = 0
     file = open(filepath, "r")
     for line in file:
-        if line:
-            line.strip()
+        if line.strip():
             nazwa, odleglosc = line.split(",")
             nowa_gwiazda = Gwiazda(nazwa.strip(), float(odleglosc.strip()))
             gwiazdy.append(nowa_gwiazda)
-            dodane+=1
+            dodane += 1
     file.close()
-    #print("Dodano gwiazdy")
     return dodane
+
 
 def merge_sort(arr):
     if len(arr) > 1:
@@ -112,19 +132,44 @@ def merge_sort(arr):
         while i < len(lewa) and j < len(prawa):
             if lewa[i].odleglosc <= prawa[j].odleglosc:
                 arr[k] = lewa[i]
-                i+=1
+                i += 1
             else:
                 arr[k] = prawa[j]
-                j+=1
-            k+=1
+                j += 1
+            k += 1
         while i < len(lewa):
             arr[k] = lewa[i]
-            i+=1
-            k+=1
+            i += 1
+            k += 1
         while j < len(prawa):
             arr[k] = prawa[j]
-            j+=1
-            k+=1
-        
+            j += 1
+            k += 1
+
+
+# ---------------- Dodatkowe wyszukiwanie binarne (pokazowe) ----------------
+def binary_search(sorted_arr, target: str):
+    """
+    Przykładowa implementacja wyszukiwania binarnego po nazwie gwiazdy.
+    UWAGA: szuka dokładnego dopasowania (arr[mid].nazwa == target).
+           Jeśli chcesz szukać fragmentów, trzeba by przerobić kryteria.
+    """
+    left = 0
+    right = len(sorted_arr) - 1
+    target = target.lower()
+
+    while left <= right:
+        mid = (left + right) // 2
+        current = sorted_arr[mid].nazwa.lower()
+
+        if current == target:
+            return mid
+        elif current < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1
+
+
 if __name__ == "__main__":
     interfejs()
