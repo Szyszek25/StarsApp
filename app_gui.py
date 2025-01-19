@@ -17,7 +17,7 @@ def load_image_21x9_cover(image_path: str, target_width=1280):
     if img_ratio > (target_width / target_height):
         scale = target_height / orig_h
         new_w = int(orig_w * scale)
-        new_h = target_heigh
+        new_h = target_height
     else:
         scale = target_width / orig_w
         new_w = target_width
@@ -143,8 +143,8 @@ class ModernStarsApp(ctk.CTk):
 
     def refresh_list(self):
         self.star_listbox.delete(0, tk.END)
-        for gwiazda in wyswietl_gwiazdy():
-            self.star_listbox.insert(tk.END, gwiazda)
+        for id, gwiazda in enumerate(wyswietl_gwiazdy(), start=1):
+            self.star_listbox.insert(tk.END, f"{id}. {gwiazda}")
 
     def delete_star(self):
         selection = self.star_listbox.curselection()
@@ -152,7 +152,7 @@ class ModernStarsApp(ctk.CTk):
             messagebox.showinfo("Info", "Wybierz gwiazdę do usunięcia.")
             return
 
-        index = selection[0] + 1
+        index = selection[0] #+ 1
         usun_gwiazde(index)
         self.refresh_list()
     #not working
@@ -162,8 +162,13 @@ class ModernStarsApp(ctk.CTk):
             filetypes=[("Pliki tekstowe", "*.txt")]
         )
         if filepath:
-            dodaj_z_pliku(filepath)
-            self.refresh_list()
+            try:
+                dodane = dodaj_z_pliku(filepath)
+                self.refresh_list()
+                messagebox.showinfo("Wczytywanie z pliku", f"Dodano gwiazdy: {dodane}")
+            except:
+                messagebox.showerror("Błąd", "Nie udało się dodać gwiazd")
+            
 
     def search_star(self):
         query = simpledialog.askstring("Szukaj Gwiazdy", "Podaj fragment nazwy gwiazdy:")

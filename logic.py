@@ -36,11 +36,11 @@ def interfejs():
         else:
             print("Podaj odpowiedni znak")
 
-def dodaj_gwiazde():
-    input1 = input("Podaj nazwe gwiazdy: ")
-    input2 = float(input("Podaj odleglosc gwiazdy od Ziemi: "))
+def dodaj_gwiazde(nazwa: str, odleglosc:float):
+    #input1 = input("Podaj nazwe gwiazdy: ")
+    #input2 = float(input("Podaj odleglosc gwiazdy od Ziemi: "))
 
-    nowa_gwiazda = Gwiazda(input1, input2)
+    nowa_gwiazda = Gwiazda(nazwa,odleglosc)
     gwiazdy.append(nowa_gwiazda)
     print(f"Dodano: {nowa_gwiazda}")
     
@@ -50,13 +50,16 @@ def wyswietl_gwiazdy():
         return
     
     merge_sort(gwiazdy)
-    i = 1
-    print(f"Wszystkie gwiazdy: ")
-    for gwiazda in gwiazdy:
-        print(i, gwiazda)
-        i+=1
+    return gwiazdy
+    
+    #i = 1
+    #print(f"Wszystkie gwiazdy: ")
+    #for gwiazda in gwiazdy:
+        #print(i, gwiazda)
+       # i+=1
 
-def usun_gwiazde():
+def usun_gwiazde(index: int):
+    """
     if not gwiazdy:
         print("Brak gwiazd")
         return
@@ -69,20 +72,31 @@ def usun_gwiazde():
             return
         else:
                 print("Podaj odpowiedni znak")
+    """
+    #if 0 <= index < len(gwiazdy):
+    usunieta = gwiazdy.pop(index)
+    print(f"Usunięto: {usunieta}")  # do gui
+    #else:
+        #print("Nieprawidłowy indeks")  # do gui
 
-def wyszukaj_gwiazde():
-    return 0
 
-def dodaj_z_pliku():
-    file = open(r"C:\Users\jakub\Desktop\StarsApp\pliktest.txt", "r")
+def wyszukaj_gwiazde(query: str):
+    wyniki = [gwiazda for gwiazda in gwiazdy if query.lower() in gwiazda.nazwa.lower()]
+    return wyniki
+
+def dodaj_z_pliku(filepath: str):
+    dodane = 0
+    file = open(filepath, "r")
     for line in file:
         if line:
             line.strip()
             nazwa, odleglosc = line.split(",")
             nowa_gwiazda = Gwiazda(nazwa.strip(), float(odleglosc.strip()))
             gwiazdy.append(nowa_gwiazda)
+            dodane+=1
     file.close()
-    print("Dodano gwiazdy")
+    #print("Dodano gwiazdy")
+    return dodane
 
 def merge_sort(arr):
     if len(arr) > 1:
