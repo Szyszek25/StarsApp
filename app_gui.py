@@ -178,6 +178,8 @@ class ModernStarsApp(ctk.CTk):
             self.refresh_list()
             self.name_entry.delete(0, tk.END)
             self.distance_entry.delete(0, tk.END)
+        except ValueError as e:
+            tk.messagebox.showerror("Błąd", str(e))
         except ValueError:
             tk.messagebox.showerror("Błąd", "Odległość musi być liczbą.")
 
@@ -208,6 +210,8 @@ class ModernStarsApp(ctk.CTk):
                 dodane = dodaj_z_pliku(filepath)
                 self.refresh_list()
                 tk.messagebox.showinfo("Wczytywanie z pliku", f"Dodano gwiazdy: {dodane}")
+            except ValueError as e:
+                tk.messagebox.showerror("Błąd", str(e))
             except Exception as e:
                 tk.messagebox.showerror("Błąd", f"Nie udało się dodać gwiazd\n{e}")
 

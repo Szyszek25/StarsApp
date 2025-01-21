@@ -49,6 +49,9 @@ def dodaj_gwiazde(nazwa: str = None, odleglosc: float = None):
     else:
         nowa_gwiazda = Gwiazda(nazwa, odleglosc)
     
+    if any(gwiazda.nazwa.lower() == nowa_gwiazda.nazwa.lower() for gwiazda in gwiazdy):
+        raise ValueError(f"Gwiazda o nazwie '{nowa_gwiazda.nazwa}' już istnieje.")
+
     gwiazdy.append(nowa_gwiazda)
     print(f"Dodano: {nowa_gwiazda}")
 
@@ -105,16 +108,20 @@ def dodaj_z_pliku(filepath: str = None):
     """
     if filepath is None:
         filepath = input("Podaj ścieżkę do pliku: ")
-    gwiazdy.clear()  # <-- Kluczowy fragment, aby nie duplikować wpisów
+        
     dodane = 0
-    file = open(filepath, "r")
-    for line in file:
-        if line.strip():
-            nazwa, odleglosc = line.split(",")
-            nowa_gwiazda = Gwiazda(nazwa.strip(), float(odleglosc.strip()))
-            gwiazdy.append(nowa_gwiazda)
-            dodane += 1
-    file.close()
+    try:
+        file = open(filepath, "r")
+        for line in file:
+            if line.strip():
+                nazwa, odleglosc = line.split(",")
+                nazwa = nazwa.strip()
+                odleglosc = float(odleglosc.strip())
+                dodaj_gwiazde(nazwa, odleglosc)
+                dodane += 1
+        file.close()
+    except Exception as e:
+        raise e
     return dodane
 
 
