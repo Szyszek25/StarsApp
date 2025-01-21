@@ -167,7 +167,7 @@ def binary_search(sorted_arr, target: str):
 
     while left <= right:
         mid = (left + right) // 2
-        current = sorted_arr[mid].nazwa.lower()
+        current = sorted_arr[mid].nazwa.lower().strip()
 
         if current == target:
             return mid

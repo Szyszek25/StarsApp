@@ -226,17 +226,19 @@ class ModernStarsApp(ctk.CTk):
                 tk.messagebox.showinfo("Brak wyników", "Nie znaleziono gwiazd.")
 
     def search_star_exact(self):
-        query = tk.simpledialog.askstring("Szukaj Dokładnie", "Podaj **dokładną** nazwę gwiazdy:")
+        query = simpledialog.askstring("Szukaj Dokładnie", "Podaj **dokładną** nazwę gwiazdy:")
         if query:
-            lista_gwiazd = wyswietl_gwiazdy()  # lista jest sortowana przez merge_sort
+            # Posortuj listę według nazw, aby działało binary search
+            lista_gwiazd = sorted(wyswietl_gwiazdy(), key=lambda gwiazda: gwiazda.nazwa.lower())
             index = binary_search(lista_gwiazd, query)
             if index != -1:
-                tk.messagebox.showinfo("Wynik Wyszukiwania", f"Znaleziono: {lista_gwiazd[index]}")
+                messagebox.showinfo("Wynik Wyszukiwania", f"Znaleziono: {lista_gwiazd[index]}")
                 self.star_listbox.selection_clear(0, tk.END)
                 self.star_listbox.selection_set(index)
                 self.star_listbox.activate(index)
             else:
-                tk.messagebox.showinfo("Brak wyników", "Nie znaleziono gwiazdy o podanej nazwie.")
+                messagebox.showinfo("Brak wyników", "Nie znaleziono gwiazdy o podanej nazwie.")
+
 
 
 if __name__ == "__main__":
