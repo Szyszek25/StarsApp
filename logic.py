@@ -23,7 +23,7 @@ def interfejs():
         if (wybor == "0"):
            dodaj_gwiazde() 
         elif (wybor == "1"):
-           wyswietl_gwiazdy()  
+           wyswietl_gwiazdy(False)  
         elif (wybor == "2"):
            usun_gwiazde() 
         elif (wybor == "3"):
@@ -56,13 +56,16 @@ def dodaj_gwiazde(nazwa: str = None, odleglosc: float = None):
     print(f"Dodano: {nowa_gwiazda}")
 
 
-def wyswietl_gwiazdy():
+def wyswietl_gwiazdy(print_out: bool = True):
     if not gwiazdy:
         print("Brak gwiazd")
         return []
     
     # Sortowanie po odległości - tak, jak było w merge_sort
     merge_sort(gwiazdy)
+    if print_out == False:
+        for id, gwiazda in enumerate(gwiazdy, start=1):
+            print(f"{id}. {gwiazda}")
     return gwiazdy
 
 
@@ -99,6 +102,11 @@ def wyszukaj_gwiazde(query: str = None):
     if query is None:
         query = input("Podaj fragment nazwy gwiazdy: ")
     wyniki = [gwiazda for gwiazda in gwiazdy if query.lower() in gwiazda.nazwa.lower()]
+    if wyniki:
+        for gwiazda in wyniki:
+            print(gwiazda)
+    else:
+        print("Nie znaleziono gwiazd")
     return wyniki
 
 
