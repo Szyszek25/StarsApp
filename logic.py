@@ -55,6 +55,17 @@ def dodaj_gwiazde(nazwa: str = None, odleglosc: float = None):
     gwiazdy.append(nowa_gwiazda)
     print(f"Dodano: {nowa_gwiazda}")
 
+def zapisz_do_pliku(filepath: str):
+    """
+    Zapisuje wszystkie gwiazdy z listy `gwiazdy` do wskazanego pliku.
+    """
+    try:
+        with open(filepath, "w") as file:
+            for gwiazda in gwiazdy:
+                file.write(f"{gwiazda.nazwa},{gwiazda.odleglosc}\n")
+        print(f"Dane zostały zapisane do pliku: {filepath}")
+    except Exception as e:
+        print(f"Błąd podczas zapisywania pliku: {e}")
 
 def wyswietl_gwiazdy(print_out: bool = True):
     if not gwiazdy:
@@ -109,28 +120,36 @@ def wyszukaj_gwiazde(query: str = None):
         print("Nie znaleziono gwiazd")
     return wyniki
 
-
 def dodaj_z_pliku(filepath: str = None):
     """
-    Przy kolejnym wczytaniu pliku czyścimy listę gwiazd, aby nie było duplikacji.
+    Dodaje gwiazdy z pliku do istniejącej listy, unikając duplikatów nazw.
     """
+    global gwiazdy
     if filepath is None:
         filepath = input("Podaj ścieżkę do pliku: ")
-        
+    
     dodane = 0
     try:
-        file = open(filepath, "r")
-        for line in file:
-            if line.strip():
-                nazwa, odleglosc = line.split(",")
-                nazwa = nazwa.strip()
-                odleglosc = float(odleglosc.strip())
-                dodaj_gwiazde(nazwa, odleglosc)
-                dodane += 1
-        file.close()
+        # Wczytujemy dane z pliku
+        with open(filepath, "r") as file:
+            for line in file:
+                if line.strip():  # Ignorujemy puste linie
+                    nazwa, odleglosc = line.split(",")
+                    nazwa = nazwa.strip()
+                    odleglosc = float(odleglosc.strip())
+                    
+                    # Sprawdzamy, czy gwiazda o tej nazwie już istnieje
+                    if any(gwiazda.nazwa.lower() == nazwa.lower() for gwiazda in gwiazdy):
+                        print(f"Pominięto duplikat: {nazwa}")
+                        continue
+                    
+                    # Dodajemy nową gwiazdę
+                    dodaj_gwiazde(nazwa, odleglosc)
+                    dodane += 1
     except Exception as e:
         raise e
     return dodane
+
 
 
 def merge_sort(arr):

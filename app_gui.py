@@ -3,7 +3,7 @@
 import customtkinter as ctk
 import tkinter as tk
 from tkinter import filedialog, messagebox, simpledialog
-from logic import dodaj_gwiazde, wyswietl_gwiazdy, usun_gwiazde, wyszukaj_gwiazde, dodaj_z_pliku, binary_search
+from logic import dodaj_gwiazde, wyswietl_gwiazdy, usun_gwiazde, wyszukaj_gwiazde, dodaj_z_pliku, binary_search,zapisz_do_pliku
 from PIL import Image
 import os
 
@@ -35,9 +35,10 @@ class ModernStarsApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
+
         # Ustawienia główne
         self.title("Gwiazdy w Kosmosie – Pełny Interfejs")
-        self.geometry("850x768")  # ustawiłeś idealną rozdzielczość
+        self.geometry("1000x768")  # ustawiłeś idealną rozdzielczość
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
 
@@ -101,13 +102,17 @@ class ModernStarsApp(ctk.CTk):
         self.exact_search_button = ctk.CTkButton(self.button_frame, text="Szukaj Dokładnie", command=self.search_star_exact)
         self.delete_button = ctk.CTkButton(self.button_frame, text="Usuń Zaznaczoną", command=self.delete_star)
         self.refresh_button = ctk.CTkButton(self.button_frame, text="Odśwież Listę", command=self.refresh_list)
+        self.save_button = ctk.CTkButton(self.button_frame, text="Zapisz do Pliku", command=self.save_to_file)
+        
+
 
         self.buttons = [
             self.load_button,
             self.search_button,
             self.exact_search_button,
             self.delete_button,
-            self.refresh_button
+            self.refresh_button,
+            self.save_button
         ]
 
         self.button_frame.bind("<Configure>", self.arrange_buttons)
@@ -137,8 +142,7 @@ class ModernStarsApp(ctk.CTk):
 
         # Rozmieść widgety na podstawie obliczonej liczby kolumn
         for index, widget in enumerate(self.form_widgets):
-            row = index // columnspyinstaller --onefile --noconsole --add-data "top_banner.png;." stars_gui.py
-
+            row = index // columns
             col = index % columns
             widget.grid(row=row, column=col, padx=5, pady=5, sticky="ew")
 
@@ -239,6 +243,19 @@ class ModernStarsApp(ctk.CTk):
                 self.star_listbox.activate(index)
             else:
                 messagebox.showinfo("Brak wyników", "Nie znaleziono gwiazdy o podanej nazwie.")
+    def save_to_file(self):
+        filepath = filedialog.asksaveasfilename(
+            title="Zapisz jako",
+            filetypes=[("Pliki tekstowe", "*.txt")],
+            defaultextension=".txt"
+        )
+        if filepath:
+            try:
+                zapisz_do_pliku(filepath)
+                messagebox.showinfo("Sukces", f"Dane zapisano do pliku: {filepath}")
+            except Exception as e:
+                messagebox.showerror("Błąd", f"Nie udało się zapisać danych: {e}")
+
 
 
 

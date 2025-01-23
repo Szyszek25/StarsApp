@@ -1,0 +1,5 @@
+Proxima Centauri,4.24
+Alpha Centauri,4.37
+Sirius,8.6
+Betelgeuse,642.5
+gfhfgh,87787.0
