@@ -137,7 +137,8 @@ class ModernStarsApp(ctk.CTk):
 
         # Rozmieść widgety na podstawie obliczonej liczby kolumn
         for index, widget in enumerate(self.form_widgets):
-            row = index // columns
+            row = index // columnspyinstaller --onefile --noconsole --add-data "top_banner.png;." stars_gui.py
+
             col = index % columns
             widget.grid(row=row, column=col, padx=5, pady=5, sticky="ew")
 
